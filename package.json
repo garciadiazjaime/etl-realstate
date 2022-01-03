@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "a": "heroku accounts:set etl-realstate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "npx nodemon index.js",
-    "lint": "npx eslint ."
+    "lint": "npx eslint .",
+    "a": "heroku accounts:set etl-realstate",
+    "d": "git push heroku",
+    "l": " heroku logs"
   },
   "keywords": [],
   "author": "",
