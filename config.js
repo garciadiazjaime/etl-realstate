@@ -13,6 +13,14 @@ const config = convict({
     default: '3030',
     env: 'PORT',
   },
+  db: {
+    url: {
+      doc: 'Database host name/IP',
+      format: '*',
+      default: 'mongodb://localhost:27017/feedme',
+      env: 'DB_URL',
+    },
+  },
 });
 
 // Perform validation
