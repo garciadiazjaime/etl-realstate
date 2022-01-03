@@ -19,6 +19,8 @@
     "debug": "^4.3.3",
     "express": "^4.17.2",
     "mongoose": "^6.1.4",
+    "node-cron": "^3.0.0",
+    "node-fetch": "^2.6.6",
     "puppeteer": "^13.0.1"
   },
   "devDependencies": {

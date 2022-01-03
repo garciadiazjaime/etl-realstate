@@ -93,3 +93,5 @@ if (require.main === module) {
     debug('done');
   })();
 }
+
+module.exports = main;
