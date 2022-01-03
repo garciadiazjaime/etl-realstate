@@ -10,7 +10,12 @@ const { getPrice, getCurrency } = require('../support/currency');
 const { cleanString } = require('../support/string');
 
 async function extract() {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: [
+      '--no-sandbox',
+      '--disable-gpu',
+    ],
+  });
   const page = await browser.newPage();
   const url = 'https://www.lamudi.com.mx/baja-california/tijuana/for-sale/';
   await page.goto(url);
