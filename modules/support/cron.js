@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const debug = require('debug')('app:cron');
 
 const lamudiCron = require('../lamudi/cron-entry');
+const inmuebles24Cron = require('../inmuebles24/cron-entry');
 const { ping } = require('./heroku');
 
 async function setupCron() {
@@ -12,6 +13,7 @@ async function setupCron() {
     debug(`========JOB:lamudiCron:${prodCount}========`);
 
     await lamudiCron();
+    await inmuebles24Cron();
   });
 
   cron.schedule('*/12 * * * *', async () => {

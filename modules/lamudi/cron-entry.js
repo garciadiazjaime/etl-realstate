@@ -1,33 +1,13 @@
-const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
-const mapSeries = require('async/mapSeries');
 
 const debug = require('debug')('app:lamudi');
-
-const { RealstateModel } = require('../place/model');
 const { openDB } = require('../support/database');
 const { getPrice, getCurrency } = require('../support/currency');
+const extract = require('../support/extract');
+const load = require('../support/load');
 const { cleanString } = require('../support/string');
 
-async function extract() {
-  const browser = await puppeteer.launch({
-    args: [
-      '--no-sandbox',
-      '--disable-gpu',
-    ],
-  });
-  const page = await browser.newPage();
-  const url = 'https://www.lamudi.com.mx/baja-california/tijuana/for-sale/';
-  await page.goto(url);
-
-  const html = await page.content();
-
-  await browser.close();
-
-  return html;
-}
-
-function transform(html) {
+function transform(html, source, city) {
   const $ = cheerio.load(html);
 
   return $('.js-listingContainer .ListingCell-row .ListingCell-content').toArray().map((element) => {
@@ -42,12 +22,12 @@ function transform(html) {
 
     const place = {
       address,
-      city: 'tijuana',
+      city,
       currency,
       description,
       images,
       price,
-      source: 'lamudi',
+      source,
       title,
       url,
     };
@@ -56,37 +36,13 @@ function transform(html) {
   });
 }
 
-async function load(places) {
-  if (!Array.isArray(places) || !places.length) {
-    debug('NO_PLACES');
-  }
-
-  debug(`places:${places.length}`);
-  let newPostsCount = 0;
-
-  await mapSeries(places, async (place) => {
-    const documents = await RealstateModel.countDocuments({ url: place.url });
-
-    if (documents) {
-      return null;
-    }
-
-    newPostsCount += 1;
-
-    return RealstateModel.findOneAndUpdate({ url: place.url }, {
-      ...place,
-    }, {
-      upsert: true,
-    });
-  });
-
-  debug(`new_places:${newPostsCount}`);
-}
-
 async function main() {
-  const html = await extract();
+  const city = 'tijuana';
+  const source = 'lamudi';
+  const url = 'https://www.lamudi.com.mx/baja-california/tijuana/for-sale/';
+  const html = await extract(url, `${source}-${city}`);
 
-  const places = transform(html);
+  const places = transform(html, source, city);
 
   await load(places);
 }
