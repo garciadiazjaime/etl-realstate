@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "a": "heroku accounts:set etl-realstate",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "npx nodemon index.js",
