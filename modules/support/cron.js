@@ -22,7 +22,7 @@ async function setupCron() {
 
   await ping();
 
-  await lamudiCron();
+  await inmuebles24Cron();
 
   return debug('CRON_SETUP');
 }
