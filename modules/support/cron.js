@@ -3,6 +3,7 @@ const debug = require('debug')('app:cron');
 
 const lamudiCron = require('../lamudi/cron-entry');
 const inmuebles24Cron = require('../inmuebles24/cron-entry');
+const vivanunciosCron = require('../vivanuncios/cron-entry');
 const { ping } = require('./heroku');
 
 async function setupCron() {
@@ -14,6 +15,7 @@ async function setupCron() {
 
     await lamudiCron();
     await inmuebles24Cron();
+    await vivanunciosCron();
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -22,7 +24,7 @@ async function setupCron() {
 
   await ping();
 
-  await inmuebles24Cron();
+  await vivanunciosCron();
 
   return debug('CRON_SETUP');
 }
