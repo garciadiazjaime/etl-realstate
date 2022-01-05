@@ -36,11 +36,11 @@ function transform(html, source, city) {
   });
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'lamudi';
   const url = 'https://www.lamudi.com.mx/baja-california/tijuana/for-sale/';
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
   const places = transform(html, source, city);
 

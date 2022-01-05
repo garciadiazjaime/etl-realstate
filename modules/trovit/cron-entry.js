@@ -42,12 +42,12 @@ function transform(html, source, city) {
   });
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'trovit';
   const url = 'https://casas.trovit.com.mx/casa-tijuana';
 
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
   const places = transform(html, source, city);
 

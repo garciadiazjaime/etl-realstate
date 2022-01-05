@@ -16,12 +16,12 @@ async function setupCron() {
     prodCount += 1;
     debug(`========JOB:lamudiCron:${prodCount}========`);
 
-    await lamudiCron();
-    await inmuebles24Cron();
-    await vivanunciosCron();
-    await icasasCron();
-    await propiedadesCron();
-    await trovitCron();
+    await lamudiCron(prodCount);
+    await inmuebles24Cron(prodCount);
+    await vivanunciosCron(prodCount);
+    await icasasCron(prodCount);
+    await propiedadesCron(prodCount);
+    await trovitCron(prodCount);
   });
 
   cron.schedule('*/12 * * * *', async () => {

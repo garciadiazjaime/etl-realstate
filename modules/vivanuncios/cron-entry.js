@@ -100,12 +100,12 @@ function transform(html, source, city) {
   return places;
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'vivanuncios';
   const url = 'https://www.vivanuncios.com.mx/s-venta-inmuebles/tijuana/v1c1097l10015p1';
 
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
   const places = transform(html, source, city);
 

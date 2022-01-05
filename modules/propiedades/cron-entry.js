@@ -43,15 +43,15 @@ function transform(html, source, city) {
   });
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'propiedades';
   const url = 'https://propiedades.com/tijuana/residencial-venta';
 
   const html = await extract(url, `${source}-${city}`);
 
-  const places = transform(html, source, city);
-  console.log(places);
+  const places = transform(html, source, city, count);
+
   await load(places);
 }
 

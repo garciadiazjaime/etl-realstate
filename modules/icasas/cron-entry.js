@@ -42,12 +42,12 @@ function transform(html, source, city) {
   });
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'icasas';
   const url = 'https://www.icasas.mx/venta/habitacionales-casas-baja-california-tijuana-2_5_3_0_13_0';
 
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
   const places = transform(html, source, city);
 

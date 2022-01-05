@@ -1,7 +1,7 @@
 const puppeteer = require('puppeteer');
 const debug = require('debug')('app:extract');
 
-async function extract(url, name) {
+async function extract(url, name, count) {
   const browser = await puppeteer.launch({
     args: [
       '--no-sandbox',
@@ -13,14 +13,16 @@ async function extract(url, name) {
 
   debug(url);
 
+  let html;
+
   try {
     await page.goto(url);
+    html = await page.content();
   } catch (error) {
-    await page.screenshot({ path: `./public/${name}` });
-    return debug(error);
+    debug(error);
   }
 
-  const html = await page.content();
+  await page.screenshot({ path: `./public/${count}-${name}` });
 
   await browser.close();
 

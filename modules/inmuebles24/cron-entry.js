@@ -52,12 +52,12 @@ function transform(html, source, city) {
   return places;
 }
 
-async function main() {
+async function main(count) {
   const city = 'tijuana';
   const source = 'inmuebles24';
   const url = 'https://www.inmuebles24.com/inmuebles-en-venta-en-tijuana.html';
 
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
   const places = transform(html, source, city);
 
