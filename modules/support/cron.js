@@ -30,7 +30,7 @@ async function setupCron() {
 
   await ping();
 
-  await trovitCron();
+  await trovitCron(prodCount);
 
   return debug('CRON_SETUP');
 }
