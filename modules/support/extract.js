@@ -1,3 +1,4 @@
+const fs = require('fs');
 const puppeteer = require('puppeteer');
 const debug = require('debug')('app:extract');
 
@@ -22,6 +23,7 @@ async function extract(url, name, count) {
     debug(error);
   }
 
+  fs.writeFileSync(`./public/${count}-${name}.html`, html);
   await page.screenshot({ path: `./public/${count}-${name}.png` });
   debug(`screenshot:${count}-${name}.png`);
 
