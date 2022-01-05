@@ -1,7 +1,8 @@
-const debug = require('debug')('app:inmuebles24');
+const debug = require('debug')('app:vivanuncios');
 
 const { openDB } = require('../support/database');
 const extract = require('../support/extract');
+const { getLocation } = require('../support/place');
 const load = require('../support/load');
 
 function getCurrency(item) {
@@ -26,20 +27,6 @@ function getPrice(item) {
   }
 
   return null;
-}
-
-function getLocation(place, latitude, longitude) {
-  if (latitude && longitude) {
-    return {
-      ...place,
-      gps: {
-        type: 'Point',
-        coordinates: [parseFloat(longitude), parseFloat(latitude)],
-      },
-    };
-  }
-
-  return place;
 }
 
 function getLatitude(item) {
