@@ -8,6 +8,7 @@ const config = require('./config');
 
 const PORT = config.get('port');
 const app = express();
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.send(':)');
