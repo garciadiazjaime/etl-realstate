@@ -23,6 +23,7 @@ async function extract(url, name, count) {
   }
 
   await page.screenshot({ path: `./public/${count}-${name}.png` });
+  debug(`screenshot:${count}-${name}.png`);
 
   await browser.close();
 

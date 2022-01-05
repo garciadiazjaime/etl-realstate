@@ -1,6 +1,5 @@
 const debug = require('debug')('app:vivanuncios');
 
-const { openDB } = require('../support/database');
 const extract = require('../support/extract');
 const { getLocation } = require('../support/place');
 const load = require('../support/load');
@@ -100,7 +99,7 @@ function transform(html, source, city) {
   return places;
 }
 
-async function main(count) {
+async function main(count = 0) {
   const city = 'tijuana';
   const source = 'vivanuncios';
   const url = 'https://www.vivanuncios.com.mx/s-venta-inmuebles/tijuana/v1c1097l10015p1';
@@ -114,7 +113,6 @@ async function main(count) {
 
 if (require.main === module) {
   (async () => {
-    await openDB();
     await main();
     debug('done');
   })();

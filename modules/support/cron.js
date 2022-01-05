@@ -14,7 +14,7 @@ async function setupCron() {
 
   cron.schedule('7 * * * *', async () => {
     prodCount += 1;
-    debug(`========JOB:lamudiCron:${prodCount}========`);
+    debug(`========JOB:${prodCount}========`);
 
     await lamudiCron(prodCount);
     await inmuebles24Cron(prodCount);
