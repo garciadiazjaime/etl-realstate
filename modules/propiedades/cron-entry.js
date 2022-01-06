@@ -48,9 +48,9 @@ async function main(count) {
   const source = 'propiedades';
   const url = 'https://propiedades.com/tijuana/residencial-venta';
 
-  const html = await extract(url, `${source}-${city}`);
+  const html = await extract(url, `${source}-${city}`, count);
 
-  const places = transform(html, source, city, count);
+  const places = transform(html, source, city);
 
   await load(places);
 }
