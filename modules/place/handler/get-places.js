@@ -1,6 +1,6 @@
 const { RealstateModel } = require('../model');
 
-function getPlaces(lastDays = 30, limit = 100) {
+function getPlaces(lastDays = 30, limit = 50) {
   const now = new Date();
   const startDate = new Date(now);
   startDate.setDate(startDate.getDate() - lastDays);
