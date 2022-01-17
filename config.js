@@ -29,6 +29,10 @@ const config = convict({
       env: 'API_URL',
     },
   },
+  cookies: {
+    default: '',
+    env: 'COOKIES',
+  },
 });
 
 // Perform validation

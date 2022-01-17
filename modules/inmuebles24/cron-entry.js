@@ -7,6 +7,7 @@ const { getPrice, getCurrency } = require('../support/currency');
 const { cleanString } = require('../support/string');
 const extract = require('../support/extract');
 const load = require('../support/load');
+const config = require('../../config');
 
 function getImage($, element) {
   const image = $(element).find('.posting-gallery-slider .flickity-slider .is-selected img').attr('src');
@@ -52,12 +53,25 @@ function transform(html, source, city) {
   return places;
 }
 
+function getCookies() {
+  const cachedCookies = config.get('cookies');
+
+  if (cachedCookies) {
+    debug('cookies from environment');
+    return JSON.parse(decodeURIComponent(cachedCookies));
+  }
+
+  return null;
+}
+
 async function main(count) {
   const city = 'tijuana';
   const source = 'inmuebles24';
   const url = 'https://www.inmuebles24.com/inmuebles-en-venta-en-tijuana.html';
 
-  const html = await extract(url, `${source}-${city}`, count);
+  const cookies = getCookies();
+
+  const html = await extract(url, `${source}-${city}`, count, cookies);
 
   const places = transform(html, source, city);
 

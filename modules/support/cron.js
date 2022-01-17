@@ -16,22 +16,22 @@ async function setupCron() {
     prodCount += 1;
     debug(`========JOB:${prodCount}========`);
 
-    debug('lamudiCron');
+    debug('(`========lamudi');
     await lamudiCron(prodCount);
 
-    debug('inmuebles24Cron');
+    debug('(`========inmuebles24');
     await inmuebles24Cron(prodCount);
 
-    debug('vivanunciosCron');
+    debug('(`========vivanuncios');
     await vivanunciosCron(prodCount);
 
-    debug('icasasCron');
+    debug('(`========icasas');
     await icasasCron(prodCount);
 
-    debug('propiedadesCron');
+    debug('(`========propiedades');
     await propiedadesCron(prodCount);
 
-    debug('trovitCron');
+    debug('(`========trovit');
     await trovitCron(prodCount);
   });
 
