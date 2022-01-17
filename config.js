@@ -33,6 +33,10 @@ const config = convict({
     default: '',
     env: 'COOKIES',
   },
+  netlify: {
+    default: '',
+    env: 'NETLIFY_HOOK',
+  },
 });
 
 // Perform validation

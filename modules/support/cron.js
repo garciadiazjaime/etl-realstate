@@ -7,6 +7,7 @@ const vivanunciosCron = require('../vivanuncios/cron-entry');
 const icasasCron = require('../icasas/cron-entry');
 const propiedadesCron = require('../propiedades/cron-entry');
 const trovitCron = require('../trovit/cron-entry');
+const netlifyCron = require('./netlify');
 const { ping } = require('./heroku');
 
 async function setupCron() {
@@ -37,6 +38,10 @@ async function setupCron() {
 
   cron.schedule('*/12 * * * *', async () => {
     await ping();
+  });
+
+  cron.schedule('17 10 * * *', async () => {
+    await netlifyCron();
   });
 
   await ping();
