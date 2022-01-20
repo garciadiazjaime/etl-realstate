@@ -4,6 +4,7 @@ const debug = require('debug')('app:aristeguiNoticias');
 
 const listETL = require('./list-etl');
 const articleETL = require('./article-etl');
+const { NewsModel } = require('../news/model');
 const { openDB, closeDB } = require('../support/database');
 const { getPage, closeBrowser } = require('../support/extract');
 
@@ -16,13 +17,19 @@ async function main(count = 0) {
   const articles = await listETL(page, source, url, count);
   debug(`found:${articles.length}`);
 
-  let newNewsCount = 0;
+  let newCount = 0;
 
-  await mapSeries(articles.slice(0, 1), async (article) => {
-    newNewsCount += await articleETL(article, page, url);
+  await mapSeries(articles, async (article) => {
+    const documents = await NewsModel.countDocuments({ url: article.url });
+
+    if (!documents) {
+      newCount += 1;
+
+      await articleETL(article, page, url);
+    }
   });
 
-  debug(`new:${newNewsCount}`);
+  debug(`new:${newCount}`);
 
   await closeBrowser(browser);
 }

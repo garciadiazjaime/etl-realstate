@@ -5,6 +5,7 @@ const { getHTML } = require('../support/extract');
 
 function transform(html, item, domain) {
   const $ = cheerio.load(html);
+
   const title = $('.titulo-principal').text();
   const description = $('#section-main article p')
     .toArray()
@@ -23,29 +24,19 @@ function transform(html, item, domain) {
 }
 
 async function load(article) {
-  const documents = await NewsModel.countDocuments({ url: article.url });
-
-  if (documents) {
-    return 0;
-  }
-
-  await NewsModel.findOneAndUpdate({ url: article.url }, {
+  return NewsModel.findOneAndUpdate({ url: article.url }, {
     ...article,
   }, {
     upsert: true,
   });
-
-  return 1;
 }
 
-async function main(item, page, domain, newNewsCount) {
+async function main(item, page, domain) {
   const html = await getHTML(page, item.url);
 
   const article = transform(html, item, domain);
 
-  const isNew = await load(article, newNewsCount);
-
-  return isNew;
+  await load(article);
 }
 
 module.exports = main;
