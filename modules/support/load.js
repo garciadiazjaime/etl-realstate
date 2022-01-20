@@ -6,7 +6,7 @@ const { RealstateModel } = require('../place/model');
 
 async function load(places) {
   if (!Array.isArray(places) || !places.length) {
-    debug('NO_PLACES');
+    return debug('NO_PLACES');
   }
 
   debug(`places:${places.length}`);
@@ -28,7 +28,7 @@ async function load(places) {
     });
   });
 
-  debug(`new_places:${newPostsCount}`);
+  return debug(`new_places:${newPostsCount}`);
 }
 
 module.exports = load;
