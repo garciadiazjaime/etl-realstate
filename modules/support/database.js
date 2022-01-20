@@ -12,6 +12,13 @@ function openDB() {
   });
 }
 
+function closeDB() {
+  debug('close');
+
+  return mongoose.connection.close();
+}
+
 module.exports = {
   openDB,
+  closeDB,
 };
