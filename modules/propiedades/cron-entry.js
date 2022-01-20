@@ -16,7 +16,8 @@ function transform(html, source, city) {
     const value = $(element).find('.price').text();
     const price = getPrice(value);
     const currency = getCurrency(value);
-    const description = cleanString($(element).find('.description-list h4').text());
+    const description = $(element).find('.description-list h4').text().replace(/[\n\t]/g, ' ')
+      .trim();
     const title = $(element).find('.address-property').text().replace(/[\n\t]/g, ' ')
       .trim();
     const images = [$(element).find('.thumbnail-slider img').data('src')];
