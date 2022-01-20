@@ -2,7 +2,7 @@ const cheerio = require('cheerio');
 
 const debug = require('debug')('app:inmuebles24');
 
-const { openDB } = require('../support/database');
+const { openDB, closeDB } = require('../support/database');
 const { getPrice, getCurrency } = require('../support/currency');
 const { cleanString } = require('../support/string');
 const extract = require('../support/extract');
@@ -64,7 +64,7 @@ function getCookies() {
   return null;
 }
 
-async function main(count) {
+async function main(count = 0) {
   const city = 'tijuana';
   const source = 'inmuebles24';
   const url = 'https://www.inmuebles24.com/inmuebles-en-venta-en-tijuana.html';
@@ -82,6 +82,7 @@ if (require.main === module) {
   (async () => {
     await openDB();
     await main();
+    await closeDB();
     debug('done');
   })();
 }
