@@ -1,6 +1,6 @@
 const mapSeries = require('async/mapSeries');
 
-const debug = require('debug')('app:eluniversal');
+const debug = require('debug')('app:proceso');
 
 const listETL = require('./list-etl');
 const articleETL = require('./article-etl');
@@ -9,8 +9,8 @@ const { openDB, closeDB } = require('../support/database');
 const { getPage, closeBrowser } = require('../support/extract');
 
 async function main(count = 0) {
-  const source = 'eluniversal';
-  const url = 'https://www.eluniversal.com.mx';
+  const source = 'proceso';
+  const url = 'https://www.proceso.com.mx';
 
   const { browser, page } = await getPage();
 
@@ -26,7 +26,7 @@ async function main(count = 0) {
     if (!documents) {
       newCount += 1;
 
-      await articleETL(article, page);
+      await articleETL(article, page, url);
     }
   });
 
