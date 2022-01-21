@@ -8,6 +8,7 @@ const icasasCron = require('../icasas/cron-entry');
 const propiedadesCron = require('../propiedades/cron-entry');
 const trovitCron = require('../trovit/cron-entry');
 const aristeguiCron = require('../aristeguiNoticias/cron-entry');
+const eluniversalCron = require('../eluniversal/cron-entry');
 const netlifyCron = require('./netlify');
 const { ping } = require('./heroku');
 
@@ -43,6 +44,7 @@ async function setupCron() {
 
   cron.schedule('21 */12 * * *', async () => {
     await aristeguiCron();
+    await eluniversalCron();
   });
 
   cron.schedule('17 10 * * *', async () => {
