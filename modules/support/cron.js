@@ -9,33 +9,35 @@ const propiedadesCron = require('../propiedades/cron-entry');
 const trovitCron = require('../trovit/cron-entry');
 const aristeguiCron = require('../aristeguiNoticias/cron-entry');
 const eluniversalCron = require('../eluniversal/cron-entry');
+const procesoCron = require('../proceso/cron-entry');
 const netlifyCron = require('./netlify');
 const { ping } = require('./heroku');
 
 async function setupCron() {
-  let prodCount = 0;
+  let realStateCount = 0;
+  let newsCount = 0;
 
   cron.schedule('7 */12 * * *', async () => {
-    prodCount += 1;
-    debug(`========JOB:${prodCount}========`);
+    realStateCount += 1;
+    debug(`========JOB:${realStateCount}========`);
 
     debug('========lamudi');
-    await lamudiCron(prodCount);
+    await lamudiCron(realStateCount);
 
     debug('========inmuebles24');
-    await inmuebles24Cron(prodCount);
+    await inmuebles24Cron(realStateCount);
 
     debug('========vivanuncios');
-    await vivanunciosCron(prodCount);
+    await vivanunciosCron(realStateCount);
 
     debug('========icasas');
-    await icasasCron(prodCount);
+    await icasasCron(realStateCount);
 
     debug('========propiedades');
-    await propiedadesCron(prodCount);
+    await propiedadesCron(realStateCount);
 
     debug('========trovit');
-    await trovitCron(prodCount);
+    await trovitCron(realStateCount);
   });
 
   cron.schedule('*/12 * * * *', async () => {
@@ -43,8 +45,11 @@ async function setupCron() {
   });
 
   cron.schedule('21 */12 * * *', async () => {
-    await aristeguiCron();
-    await eluniversalCron();
+    newsCount += 1;
+
+    await aristeguiCron(newsCount);
+    await eluniversalCron(newsCount);
+    await procesoCron(newsCount);
   });
 
   cron.schedule('17 10 * * *', async () => {
