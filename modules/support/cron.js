@@ -11,6 +11,7 @@ const aristeguiCron = require('../aristeguiNoticias/cron-entry');
 const eluniversalCron = require('../eluniversal/cron-entry');
 const procesoCron = require('../proceso/cron-entry');
 const excelsiorCron = require('../excelsior/cron-entry');
+const eleconomistaCron = require('../eleconomista/cron-entry');
 const netlifyCron = require('./netlify');
 const { ping } = require('./heroku');
 
@@ -52,6 +53,7 @@ async function setupCron() {
     await eluniversalCron(newsCount);
     await procesoCron(newsCount);
     await excelsiorCron(newsCount);
+    await eleconomistaCron(newsCount);
   });
 
   cron.schedule('17 10 * * *', async () => {
