@@ -1,5 +1,7 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
+const fetch = require('node-fetch');
+
 const debug = require('debug')('app:extract');
 
 async function extract(url, name, count, cookies) {
@@ -65,6 +67,15 @@ async function getHTML(page, url) {
   return html;
 }
 
+async function getHTMLLean(url) {
+  debug(url);
+
+  const response = await fetch(url);
+  const html = await response.text();
+
+  return html;
+}
+
 async function printScreen(page, html, count, name) {
   fs.writeFileSync(`./public/${count}-${name}.html`, html);
 
@@ -80,5 +91,6 @@ async function closeBrowser(browser) {
 module.exports = extract;
 module.exports.getPage = getPage;
 module.exports.getHTML = getHTML;
+module.exports.getHTMLLean = getHTMLLean;
 module.exports.closeBrowser = closeBrowser;
 module.exports.printScreen = printScreen;
