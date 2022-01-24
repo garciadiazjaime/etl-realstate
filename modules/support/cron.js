@@ -46,7 +46,7 @@ async function setupCron() {
     await ping();
   });
 
-  cron.schedule('21 */12 * * *', async () => {
+  cron.schedule('21 */8 * * *', async () => {
     newsCount += 1;
 
     await aristeguiCron(newsCount);

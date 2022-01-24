@@ -31,7 +31,7 @@ async function load(article) {
   });
 }
 
-async function main(item, page, domain) {
+async function main(item, domain) {
   const html = await getHTMLLean(item.url);
 
   const article = transform(html, item, domain);

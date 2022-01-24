@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 
 const { NewsModel } = require('../news/model');
-const { getHTML } = require('../support/extract');
+const { getHTMLLean } = require('../support/extract');
 
 function transform(html, item) {
   const $ = cheerio.load(html);
@@ -9,7 +9,7 @@ function transform(html, item) {
   const description = $('.contenido-principal p')
     .toArray()
     .map((desc) => $(desc).text().replace('\n', '').trim())
-    .filter((desc) => desc.length && !desc.includes('Lee más') && !desc.includes('Lee también'));
+    .filter((desc) => desc.length && !desc.includes('Lee más') && !desc.includes('Lee también') && !desc.includes('Lea también') && !desc.includes('Puedes leer'));
   const image = $('figure.contenedor-ImagenArticulo img').attr('src');
 
   const article = {
@@ -32,8 +32,8 @@ async function load(article) {
   });
 }
 
-async function main(item, page) {
-  const html = await getHTML(page, item.url);
+async function main(item) {
+  const html = await getHTMLLean(item.url);
 
   const article = transform(html, item);
 

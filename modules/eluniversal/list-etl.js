@@ -1,6 +1,6 @@
 const cheerio = require('cheerio');
 
-const { getHTML, printScreen } = require('../support/extract');
+const { getHTMLLean } = require('../support/extract');
 
 function transform(html, domain, source) {
   const $ = cheerio.load(html);
@@ -22,10 +22,8 @@ function transform(html, domain, source) {
     .filter((item) => item.url.includes(domain));
 }
 
-async function main(page, source, url, count) {
-  const html = await getHTML(page, url);
-
-  await printScreen(page, html, count, source);
+async function main(url, source) {
+  const html = await getHTMLLean(url);
 
   const articles = await transform(html, url, source);
 

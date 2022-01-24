@@ -6,15 +6,12 @@ const listETL = require('./list-etl');
 const articleETL = require('./article-etl');
 const { NewsModel } = require('../news/model');
 const { openDB, closeDB } = require('../support/database');
-const { getPage, closeBrowser } = require('../support/extract');
 
-async function main(count = 0) {
+async function main() {
   const source = 'eluniversal';
   const url = 'https://www.eluniversal.com.mx';
 
-  const { browser, page } = await getPage();
-
-  const articles = await listETL(page, source, url, count);
+  const articles = await listETL(url, source);
 
   debug(`found:${articles.length}`);
 
@@ -26,13 +23,11 @@ async function main(count = 0) {
     if (!documents) {
       newCount += 1;
 
-      await articleETL(article, page);
+      await articleETL(article);
     }
   });
 
   debug(`new:${newCount}`);
-
-  await closeBrowser(browser);
 }
 
 if (require.main === module) {
