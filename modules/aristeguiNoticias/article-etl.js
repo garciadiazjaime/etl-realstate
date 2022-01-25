@@ -10,7 +10,7 @@ function transform(html, item, domain) {
   const description = $('#section-main article p')
     .toArray()
     .map((desc) => $(desc).text().replace('\n', '').trim())
-    .filter((desc) => desc.length);
+    .filter((desc) => desc.length && !desc.includes('Te puede interesar') && !desc.includes('Te podría interesar') && !desc.includes('Con información de'));
   const image = $('#section-main figure img.full').attr('src');
 
   const article = {
