@@ -2,6 +2,7 @@ const express = require('express');
 const debug = require('debug')('app:index');
 
 const placeRoutes = require('./modules/place/routes');
+const newsRoutes = require('./modules/news/routes');
 const { openDB } = require('./modules/support/database');
 const { setupCron } = require('./modules/support/cron');
 const { resetFolder } = require('./modules/support/folder');
@@ -16,6 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('', placeRoutes);
+app.use('', newsRoutes);
 
 app.listen(PORT, async () => {
   debug(`Listening on ${PORT}`);
