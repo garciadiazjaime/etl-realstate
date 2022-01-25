@@ -13,7 +13,7 @@ function transform(html, domain, source) {
       url,
     };
   })
-    .filter((item) => item.url && item.url.length > 33 && !item.url.includes('SuscripcionesOnline') && !item.url.includes('cartones/'))
+    .filter((item) => item.url && item.url.length > 33 && !item.url.includes('SuscripcionesOnline') && !item.url.includes('cartones/') && !item.url.includes('opinion/'))
     .map((item) => ({ ...item, url: `${domain}${item.url}` }));
 }
 
