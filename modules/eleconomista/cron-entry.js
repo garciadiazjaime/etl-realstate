@@ -1,6 +1,6 @@
 const mapSeries = require('async/mapSeries');
 
-const debug = require('debug')('app:excelsior');
+const debug = require('debug')('app:eleconomista');
 
 const listETL = require('./list-etl');
 const articleETL = require('./article-etl');

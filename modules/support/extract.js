@@ -68,8 +68,6 @@ async function getHTML(page, url) {
 }
 
 async function getHTMLLean(url) {
-  debug(url);
-
   const response = await fetch(url);
   const html = await response.text();
 
