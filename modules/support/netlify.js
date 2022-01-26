@@ -1,3 +1,4 @@
+const mapSeries = require('async/mapSeries');
 const fetch = require('node-fetch');
 const debug = require('debug')('app:netlify');
 
@@ -8,9 +9,12 @@ async function main() {
     method: 'POST',
   };
 
-  const site = config.get('netlify');
+  const sites = config.get('netlify');
 
-  await fetch(site, postConfig);
+  await mapSeries(sites.split(','), async (site) => {
+    debug(`updating:${site}`);
+    await fetch(site, postConfig);
+  });
 
   debug('updated');
 }
