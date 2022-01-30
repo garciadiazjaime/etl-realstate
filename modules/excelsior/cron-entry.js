@@ -13,8 +13,6 @@ async function main() {
 
   const articles = await listETL(url, source);
 
-  debug(`found:${articles.length}`);
-
   let newCount = 0;
 
   await mapSeries(articles, async (article) => {
@@ -27,7 +25,7 @@ async function main() {
     }
   });
 
-  debug(`new:${newCount}`);
+  debug(`${articles.length}:${newCount}`);
 }
 
 if (require.main === module) {

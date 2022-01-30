@@ -16,8 +16,6 @@ async function main(count = 0) {
 
   const articles = await listETL(page, source, url, count);
 
-  debug(`found:${articles.length}`);
-
   let newCount = 0;
 
   await mapSeries(articles, async (article) => {
@@ -30,7 +28,7 @@ async function main(count = 0) {
     }
   });
 
-  debug(`new:${newCount}`);
+  debug(`${articles.length}:${newCount}`);
 
   await closeBrowser(browser);
 }
