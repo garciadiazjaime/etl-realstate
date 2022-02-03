@@ -3,7 +3,6 @@ const debug = require('debug')('app:cron');
 
 // realstate
 const lamudiCron = require('../lamudi/cron-entry');
-const inmuebles24Cron = require('../inmuebles24/cron-entry');
 const vivanunciosCron = require('../vivanuncios/cron-entry');
 const icasasCron = require('../icasas/cron-entry');
 const propiedadesCron = require('../propiedades/cron-entry');
@@ -35,9 +34,6 @@ async function setupCron() {
 
     debug('========lamudi');
     await lamudiCron(realStateCount);
-
-    debug('========inmuebles24');
-    await inmuebles24Cron(realStateCount);
 
     debug('========vivanuncios');
     await vivanunciosCron(realStateCount);

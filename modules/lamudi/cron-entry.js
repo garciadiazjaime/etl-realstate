@@ -36,7 +36,7 @@ function transform(html, source, city) {
   });
 }
 
-async function main(count) {
+async function main(count = 0) {
   const city = 'tijuana';
   const source = 'lamudi';
   const url = 'https://www.lamudi.com.mx/baja-california/tijuana/for-sale/';

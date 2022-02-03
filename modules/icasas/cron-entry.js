@@ -42,7 +42,7 @@ function transform(html, source, city) {
   });
 }
 
-async function main(count) {
+async function main(count = 0) {
   const city = 'tijuana';
   const source = 'icasas';
   const url = 'https://www.icasas.mx/venta/habitacionales-casas-baja-california-tijuana-2_5_3_0_13_0';

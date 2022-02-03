@@ -44,7 +44,7 @@ function transform(html, source, city) {
   });
 }
 
-async function main(count) {
+async function main(count = 0) {
   const city = 'tijuana';
   const source = 'propiedades';
   const url = 'https://propiedades.com/tijuana/residencial-venta';
