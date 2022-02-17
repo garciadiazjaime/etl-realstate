@@ -24,6 +24,31 @@ RealstateSchema.index({ gps: '2dsphere' });
 
 const RealstateModel = mongoose.model('realstate', RealstateSchema);
 
+const PlaceSchema = new mongoose.Schema({
+  id: String,
+  name: String,
+  gps: {
+    type: { type: String },
+    coordinates: { type: [] },
+  },
+  address: String,
+  phone: String,
+  price: Number,
+  rating: Number,
+  url: String,
+  userRatings: Number,
+  website: String,
+  photoRef: String,
+  photoURL: String,
+  reviews: Array,
+  type: String,
+}, { timestamps: true });
+
+PlaceSchema.index({ gps: '2dsphere' });
+
+const PlaceModel = mongoose.model('place', PlaceSchema);
+
 module.exports = {
   RealstateModel,
+  PlaceModel,
 };

@@ -27,5 +27,7 @@ app.listen(PORT, async () => {
   await openDB();
   resetFolder('./public');
 
-  await setupCron();
+  if (config.get('env') === 'production') {
+    await setupCron();
+  }
 });
