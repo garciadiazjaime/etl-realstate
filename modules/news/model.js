@@ -11,7 +11,7 @@ const NewsSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-NewsSchema.index({ description: 'text', address: 'text' });
+NewsSchema.index({ description: 'text' });
 
 const NewsModel = mongoose.model('new', NewsSchema);
 

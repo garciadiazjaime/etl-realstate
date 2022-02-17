@@ -1,17 +1,22 @@
 const { NewsModel } = require('../model');
 
-function getNews(lastDays = 1, limit = 50) {
-  const now = new Date();
-  const startDate = new Date(now);
-  startDate.setDate(startDate.getDate() - lastDays);
+function getNews(limit = 30) {
+  return NewsModel.find({ title: { $ne: '' } })
+    .sort({ createdAt: -1 })
+    .limit(limit);
+}
 
+async function getNewsFromCategory(category, limit = 30) {
   return NewsModel.find({
-    createdAt: {
-      $gte: startDate,
+    $text: {
+      $search: category,
     },
   })
     .sort({ createdAt: -1 })
     .limit(limit);
 }
 
-module.exports = getNews;
+module.exports = {
+  getNews,
+  getNewsFromCategory,
+};
