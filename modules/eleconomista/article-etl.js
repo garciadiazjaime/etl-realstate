@@ -12,7 +12,7 @@ function transform(html, item, domain) {
     .map((desc) => $(desc).text().replace('\n', '').trim())
     .filter((desc) => desc.length && !desc.includes('Archivado en'));
 
-  const image = $('figure.img-top img').attr('src');
+  const image = $('[property="og:image"]').attr('content');
 
   const article = {
     ...item,
