@@ -7,7 +7,8 @@ const { getPlacesByCategory, getPlacesFromCategory } = require('./handler/get-pl
 const router = express.Router();
 
 router.get('/places', cors(), async (req, res) => {
-  const places = await getPlaces();
+  const { slug } = req.query;
+  const places = await getPlaces(slug);
 
   res.send(places);
 });

@@ -1,15 +1,17 @@
 const { RealstateModel } = require('../model');
 
-function getPlaces(lastDays = 30, limit = 50) {
-  const now = new Date();
-  const startDate = new Date(now);
-  startDate.setDate(startDate.getDate() - lastDays);
+function getPlaces(slug, limit = 27) {
+  if (slug) {
+    return RealstateModel.find({
+      $text: {
+        $search: slug,
+      },
+    })
+      .sort({ createdAt: -1 })
+      .limit(limit);
+  }
 
-  return RealstateModel.find({
-    createdAt: {
-      $gte: startDate,
-    },
-  })
+  return RealstateModel.find()
     .sort({ createdAt: -1 })
     .limit(limit);
 }
