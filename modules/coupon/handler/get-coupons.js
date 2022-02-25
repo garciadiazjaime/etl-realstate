@@ -1,15 +1,15 @@
 const { CouponModel } = require('../model');
 
-function getCoupons(lastDays = 30, limit = 50) {
-  const now = new Date();
-  const startDate = new Date(now);
-  startDate.setDate(startDate.getDate() - lastDays);
+function getCoupons(merchant, limit = 27) {
+  if (merchant) {
+    return CouponModel.find({
+      merchant,
+    })
+      .sort({ createdAt: -1 })
+      .limit(limit);
+  }
 
-  return CouponModel.find({
-    createdAt: {
-      $gte: startDate,
-    },
-  })
+  return CouponModel.find()
     .sort({ createdAt: -1 })
     .limit(limit);
 }
