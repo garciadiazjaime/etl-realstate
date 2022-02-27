@@ -18,6 +18,9 @@ const eleconomistaCron = require('../eleconomista/cron-entry');
 // coupons
 const couponfollowCron = require('../coupon/couponfollow/cron-entry');
 
+// garitas
+const garitasCron = require('../garitas/cbp/cron-entry');
+
 const netlifyCron = require('./netlify');
 const { ping } = require('./heroku');
 
@@ -26,6 +29,7 @@ async function setupCron() {
   let newsCount = 0;
   const counter = {
     coupons: 0,
+    garitas: 0,
   };
 
   cron.schedule('7 */12 * * *', async () => {
@@ -50,6 +54,10 @@ async function setupCron() {
 
   cron.schedule('*/12 * * * *', async () => {
     await ping();
+  });
+
+  cron.schedule('*/15 * * * *', async () => {
+    await garitasCron(counter.garitas);
   });
 
   cron.schedule('21 */8 * * *', async () => {

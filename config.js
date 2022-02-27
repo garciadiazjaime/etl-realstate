@@ -17,7 +17,7 @@ const config = convict({
     url: {
       doc: 'Database host name/IP',
       format: '*',
-      default: 'mongodb://localhost:27017/feedme',
+      default: 'mongodb://localhost:27017/mint',
       env: 'DB_URL',
     },
   },
