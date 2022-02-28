@@ -29,6 +29,14 @@ const config = convict({
       env: 'API_URL',
     },
   },
+  gcenter: {
+    url: {
+      doc: 'API URL',
+      format: String,
+      default: 'http://127.0.0.1:3030',
+      env: 'GCENTER_API_URL',
+    },
+  },
   cookies: {
     default: '',
     env: 'COOKIES',

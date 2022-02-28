@@ -2,6 +2,7 @@ const xml2js = require('xml2js');
 const fs = require('fs');
 const mapSeries = require('async/mapSeries');
 const { isDeepStrictEqual } = require('util');
+const fetch = require('node-fetch');
 
 const debug = require('debug')('app:cbp');
 
@@ -86,6 +87,21 @@ function load(report) {
   return new GaritaModel(report).save();
 }
 
+async function uploadAsset(city, payload) {
+  const body = JSON.stringify({
+    timestamp: new Date().toJSON(),
+    report: payload,
+  });
+
+  await fetch(`${config.get('gcenter.url')}/report/static?city=${city}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body,
+  });
+}
+
 async function notifyUpdates(city) {
   const latestTwoReports = await GaritaModel.find({ city }, { _id: 0, ports: 1 })
     .sort({ createdAt: -1 })
@@ -93,7 +109,11 @@ async function notifyUpdates(city) {
 
   const [recent, previous] = latestTwoReports;
 
-  debug(`isEqual:${city}:${isDeepStrictEqual(recent, previous)}`);
+  const isEqual = isDeepStrictEqual(recent, previous);
+  if (!isEqual) {
+    await uploadAsset(city, recent);
+    debug(`isEqual:${city}:${isEqual}`);
+  }
 }
 
 async function main(count = 0) {

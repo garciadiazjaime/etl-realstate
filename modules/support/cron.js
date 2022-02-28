@@ -57,6 +57,8 @@ async function setupCron() {
   });
 
   cron.schedule('*/15 * * * *', async () => {
+    counter.garitas += 1;
+
     await garitasCron(counter.garitas);
   });
 
