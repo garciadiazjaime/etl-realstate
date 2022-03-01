@@ -2,7 +2,7 @@ const { PlaceModel } = require('../model');
 
 const categories = ['cafe', 'restaurant', 'bar'];
 
-async function getPlacesByCategory(limit = 4) {
+async function getPlacesByCategory(limit = 5) {
   const promises = categories.map((category) => PlaceModel.find({
     type: category,
   }).limit(limit));
