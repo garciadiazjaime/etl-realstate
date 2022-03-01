@@ -84,7 +84,10 @@ function load(report) {
 async function uploadAsset(city, payload) {
   const body = JSON.stringify({
     timestamp: new Date().toJSON(),
-    report: payload.report,
+    report: {
+      sanYsidro: payload.report.sanYsidro,
+      otay: payload.report.otay,
+    },
   });
 
   await fetch(`${config.get('gcenter.url')}/report/static?city=${city}`, {
