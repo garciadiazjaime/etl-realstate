@@ -18,16 +18,16 @@ function getVeicle(data) {
 
   return {
     standard: {
-      minutes: standard.delay_minutes[0],
-      lanes: standard.lanes_open[0],
+      time: +standard.delay_minutes[0],
+      lanes: +standard.lanes_open[0],
     },
     readyLanes: {
-      minutes: readyLanes.delay_minutes[0],
-      lanes: readyLanes.lanes_open[0],
+      time: +readyLanes.delay_minutes[0],
+      lanes: +readyLanes.lanes_open[0],
     },
     sentry: {
-      minutes: sentry.delay_minutes[0],
-      lanes: sentry.lanes_open[0],
+      time: +sentry.delay_minutes[0],
+      lanes: +sentry.lanes_open[0],
     },
   };
 }
@@ -38,34 +38,29 @@ function getPedestrian(data) {
 
   return {
     standard: {
-      minutes: standard.delay_minutes[0],
-      lanes: standard.lanes_open[0],
+      time: +standard.delay_minutes[0],
+      lanes: +standard.lanes_open[0],
     },
     sentry: {
-      minutes: sentry.delay_minutes[0],
-      lanes: sentry.lanes_open[0],
+      time: +sentry.delay_minutes[0],
+      lanes: +sentry.lanes_open[0],
     },
   };
 }
 
-function transform(port, data) {
-  const { id, name } = port;
-
+function transform(portId, data) {
   const response = data.border_wait_time.port
-    .filter((item) => item.port_number[0] === id)
+    .filter((item) => item.port_number[0] === portId)
     .map((item) => {
       const vehicle = getVeicle(item.passenger_vehicle_lanes[0]);
       const pedestrian = getPedestrian(item.pedestrian_lanes[0]);
       const report = {
+        portId,
         vehicle,
         pedestrian,
       };
 
-      return {
-        id,
-        name,
-        report,
-      };
+      return report;
     });
 
   return response[0];
@@ -90,7 +85,7 @@ function load(report) {
 async function uploadAsset(city, payload) {
   const body = JSON.stringify({
     timestamp: new Date().toJSON(),
-    report: payload,
+    report: payload.report,
   });
 
   await fetch(`${config.get('gcenter.url')}/report/static?city=${city}`, {
@@ -103,7 +98,7 @@ async function uploadAsset(city, payload) {
 }
 
 async function notifyUpdates(city) {
-  const latestTwoReports = await GaritaModel.find({ city }, { _id: 0, ports: 1 })
+  const latestTwoReports = await GaritaModel.find({ city }, { _id: 0, report: 1 })
     .sort({ createdAt: -1 })
     .limit(2);
 
@@ -127,16 +122,16 @@ async function main(count = 0) {
       city: 'tijuana',
       ports: [{
         id: '250401',
-        name: 'San Ysidro',
+        name: 'sanYsidro',
       }, {
         id: '250601',
-        name: 'Otay',
+        name: 'otay',
       }, {
         id: '250407',
-        name: 'PedWest',
+        name: 'pedWest',
       }, {
         id: '250409',
-        name: 'Cross Border Express',
+        name: 'crossBorderExpress',
       }],
     },
     {
@@ -155,7 +150,11 @@ async function main(count = 0) {
     const { city, ports } = item;
     const report = {
       city,
-      ports: ports.map((port) => transform(port, data)),
+      report: ports.reduce((accu, port) => {
+        accu[port.name] = transform(port.id, data); //eslint-disable-line
+
+        return accu;
+      }, {}),
     };
 
     await load(report);
