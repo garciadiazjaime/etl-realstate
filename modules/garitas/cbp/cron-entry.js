@@ -13,37 +13,37 @@ const config = require('../../../config');
 
 function getVeicle(data) {
   const [standard] = data.standard_lanes;
-  const [readyLanes] = data.standard_lanes;
-  const [sentry] = data.NEXUS_SENTRI_lanes;
+  const [readyLane] = data.standard_lanes;
+  const [sentri] = data.NEXUS_SENTRI_lanes;
 
   return {
     standard: {
       time: +standard.delay_minutes[0],
       lanes: +standard.lanes_open[0],
     },
-    readyLanes: {
-      time: +readyLanes.delay_minutes[0],
-      lanes: +readyLanes.lanes_open[0],
+    sentri: {
+      time: +sentri.delay_minutes[0],
+      lanes: +sentri.lanes_open[0],
     },
-    sentry: {
-      time: +sentry.delay_minutes[0],
-      lanes: +sentry.lanes_open[0],
+    readyLane: {
+      time: +readyLane.delay_minutes[0],
+      lanes: +readyLane.lanes_open[0],
     },
   };
 }
 
 function getPedestrian(data) {
   const [standard] = data.standard_lanes;
-  const [sentry] = data.ready_lanes;
+  const [readyLane] = data.ready_lanes;
 
   return {
     standard: {
       time: +standard.delay_minutes[0],
       lanes: +standard.lanes_open[0],
     },
-    sentry: {
-      time: +sentry.delay_minutes[0],
-      lanes: +sentry.lanes_open[0],
+    readyLane: {
+      time: +readyLane.delay_minutes[0],
+      lanes: +readyLane.lanes_open[0],
     },
   };
 }
@@ -55,7 +55,6 @@ function transform(portId, data) {
       const vehicle = getVeicle(item.passenger_vehicle_lanes[0]);
       const pedestrian = getPedestrian(item.pedestrian_lanes[0]);
       const report = {
-        portId,
         vehicle,
         pedestrian,
       };
