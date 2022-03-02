@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const { NewsModel } = require('../news/model');
 const { getHTMLLean } = require('../support/extract');
 
-function transform(html, item, domain) {
+function transform(html, item) {
   const $ = cheerio.load(html);
 
   const title = $('.title h1').text();
@@ -18,7 +18,7 @@ function transform(html, item, domain) {
     ...item,
     title,
     description,
-    image: `${domain}${image}`,
+    image,
   };
 
   return article;
@@ -32,10 +32,10 @@ async function load(article) {
   });
 }
 
-async function main(item, domain) {
+async function main(item) {
   const html = await getHTMLLean(item.url);
 
-  const article = transform(html, item, domain);
+  const article = transform(html, item);
 
   await load(article);
 }

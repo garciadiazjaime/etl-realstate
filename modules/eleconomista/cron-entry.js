@@ -24,7 +24,7 @@ async function main(count = 0) {
     if (!documents) {
       newCount += 1;
 
-      await articleETL(article, url);
+      await articleETL(article);
     }
   });
 
