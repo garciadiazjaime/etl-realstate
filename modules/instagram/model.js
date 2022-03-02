@@ -49,7 +49,7 @@ const PostSchema = new Schema({
   timestamps: true,
 });
 
-PostSchema.index({ caption: 'text' });
+PostSchema.index({ caption: 'text', 'user.name': 'text' });
 
 const PostModel = mongoose.model('postRaw', PostSchema);
 

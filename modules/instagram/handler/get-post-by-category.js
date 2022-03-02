@@ -2,6 +2,11 @@ const mapSeries = require('async/mapSeries');
 
 const { PostModel } = require('../model');
 
+const blockUsers = [
+  'abbas_house',
+  'la.ruta.del.licor',
+];
+
 async function getPostByCategory(category, source, limit = 50) {
   if (category) {
     return PostModel.aggregate([{
@@ -10,6 +15,9 @@ async function getPostByCategory(category, source, limit = 50) {
           $search: category,
         },
         source,
+        'user.username': {
+          $nin: blockUsers,
+        },
       },
     }, {
       $group: {
