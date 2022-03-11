@@ -21,7 +21,9 @@ const couponfollowCron = require('../coupon/couponfollow/cron-entry');
 // garitas
 const garitasCron = require('../garitas/cbp/cron-entry');
 
+// sites
 const netlifyCron = require('./netlify');
+
 const { ping } = require('./heroku');
 
 async function setupCron() {
@@ -52,17 +54,17 @@ async function setupCron() {
     await trovitCron(realStateCount);
   });
 
-  cron.schedule('*/12 * * * *', async () => {
+  cron.schedule('*/13 * * * *', async () => {
     await ping();
   });
 
-  cron.schedule('*/15 * * * *', async () => {
+  cron.schedule('*/16 * * * *', async () => {
     counter.garitas += 1;
 
     await garitasCron(counter.garitas);
   });
 
-  cron.schedule('21 */8 * * *', async () => {
+  cron.schedule('21 */12 * * *', async () => {
     newsCount += 1;
 
     await aristeguiCron(newsCount);
@@ -72,7 +74,7 @@ async function setupCron() {
     await eleconomistaCron(newsCount);
   });
 
-  cron.schedule('13 */6 * * *', async () => {
+  cron.schedule('13 */12 * * *', async () => {
     counter.coupons += 1;
 
     await couponfollowCron(counter.coupons);
