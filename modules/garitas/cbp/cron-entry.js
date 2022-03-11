@@ -108,7 +108,7 @@ async function notifyUpdates(city) {
   const isEqual = isDeepStrictEqual(recent, previous);
   if (!isEqual) {
     await uploadAsset(city, recent);
-    debug(`isEqual:${city}:${isEqual}`);
+    debug(`notEqual:${city}`);
   }
 }
 
