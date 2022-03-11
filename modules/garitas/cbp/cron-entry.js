@@ -85,8 +85,7 @@ async function uploadAsset(city, payload) {
   const body = JSON.stringify({
     timestamp: new Date().toJSON(),
     report: {
-      sanYsidro: payload.report.sanYsidro,
-      otay: payload.report.otay,
+      ...payload.report,
     },
   });
 
@@ -128,12 +127,6 @@ async function main(count = 0) {
       }, {
         id: '250601',
         name: 'otay',
-      }, {
-        id: '250407',
-        name: 'pedWest',
-      }, {
-        id: '250409',
-        name: 'crossBorderExpress',
       }],
     },
     {
