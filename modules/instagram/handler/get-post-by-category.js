@@ -4,65 +4,30 @@ const { PostModel } = require('../model');
 
 const blockUsers = [
   'abbas_house',
+  'infomitijuana',
+  'sachet_sucree',
+  '_caffeinekicks',
   'la.ruta.del.licor',
+  'joanna.jacquelinne',
 ];
 
-async function getPostByCategory(category, source, limit = 50) {
-  if (category) {
-    return PostModel.aggregate([{
-      $match: {
-        $text: {
-          $search: category,
-        },
-        source,
-        'user.username': {
-          $nin: blockUsers,
-        },
-      },
-    }, {
-      $group: {
-        _id: '$user.id',
-        caption: {
-          $last: '$caption',
-        },
-        username: {
-          $last: '$user.username',
-        },
-        fullName: {
-          $last: '$user.fullName',
-        },
-        imageUrl: {
-          $last: '$imageUrl',
-        },
-        source: {
-          $last: '$source',
-        },
-        createdAt: {
-          $last: '$createdAt',
-        },
-
-      },
-    }, {
-      $sort: {
-        createdAt: -1,
-      },
-    }, {
-      $limit: limit,
-    }]);
-  }
-
-  const categories = ['restaurant', 'cafe', 'bar'];
-
+async function getPostByCategory(categories, source, limit = 50) {
   const response = [];
   const userIds = [];
 
-  await mapSeries(categories, async (cat) => {
+  await mapSeries(categories.split(','), async (category) => {
     const posts = await PostModel.aggregate([{
       $match: {
         source,
         'user.id': {
           $nin: userIds,
         },
+        'user.username': {
+          $nin: blockUsers,
+        },
+        $text: {
+          $search: category,
+        },
       },
     }, {
       $group: {
@@ -79,6 +44,9 @@ async function getPostByCategory(category, source, limit = 50) {
         imageUrl: {
           $last: '$imageUrl',
         },
+        likeCount: {
+          $sum: '$likeCount',
+        },
         source: {
           $last: '$source',
         },
@@ -89,6 +57,7 @@ async function getPostByCategory(category, source, limit = 50) {
       },
     }, {
       $sort: {
+        likeCount: -1,
         createdAt: -1,
       },
     }, {
@@ -99,9 +68,11 @@ async function getPostByCategory(category, source, limit = 50) {
       userIds.push(post._id); //eslint-disable-line
     });
 
-    response.push({
-      name: cat,
-      places: posts,
+    posts.forEach((post) => {
+      response.push({
+        ...post,
+        category,
+      });
     });
   });
 
