@@ -36,6 +36,10 @@ const config = convict({
       default: 'http://127.0.0.1:3030',
       env: 'GCENTER_API_URL',
     },
+    lambda: {
+      default: 'http://127.0.0.1:3030',
+      env: 'GCENTER_LAMBDA',
+    },
   },
   cookies: {
     default: '',

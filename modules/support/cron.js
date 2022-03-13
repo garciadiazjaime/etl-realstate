@@ -58,7 +58,7 @@ async function setupCron() {
     await ping();
   });
 
-  cron.schedule('*/16 * * * *', async () => {
+  cron.schedule('*/15 * * * *', async () => {
     counter.garitas += 1;
 
     await garitasCron(counter.garitas);
