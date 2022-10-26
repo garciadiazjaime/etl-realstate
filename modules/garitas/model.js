@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const GaritaSchema = new Schema({
   city: String,
   report: {},
+  label: String,
 }, {
   timestamps: true,
 });

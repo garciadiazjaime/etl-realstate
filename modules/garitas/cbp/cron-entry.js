@@ -26,7 +26,10 @@ async function uploadAsset(city, payload) {
 }
 
 async function notifyUpdates(city) {
-  const latestTwoReports = await GaritaModel.find({ city }, { _id: 0, report: 1 })
+  const latestTwoReports = await GaritaModel.find(
+    { city },
+    { _id: 0, report: 1 },
+  )
     .sort({ createdAt: -1 })
     .limit(2);
 
@@ -37,6 +40,36 @@ async function notifyUpdates(city) {
     await uploadAsset(city, recent);
     debug(`notEqual:${city}`);
   }
+}
+
+async function getReportFixed(city, report) {
+  if (city !== 'tijuana') {
+    return report;
+  }
+
+  const { standard, sentri, readyLane } = report?.report?.sanYsidro?.vehicle || {};
+  if (
+    standard?.time !== 0
+    || sentri?.time !== 0
+    || readyLane?.time !== 0
+  ) {
+    return report;
+  }
+
+  const lastWeek = new Date(new Date() - 7 * 60 * 60 * 24 * 1000);
+  const [lastWeekReport] = await GaritaModel.find({
+    city,
+    createdAt: { $lt: lastWeek },
+  })
+    .sort({ createdAt: -1 })
+    .limit(1);
+
+  const reportFixed = { ...report, label: 'fixed' };
+  reportFixed.report.sanYsidro = {
+    ...lastWeekReport.report.sanYsidro,
+  };
+
+  return reportFixed;
 }
 
 async function main(count = 0) {
@@ -50,7 +83,9 @@ async function main(count = 0) {
   await mapSeries(reports, async (report) => {
     const { city } = report;
 
-    await new GaritaModel(report).save();
+    const reportFixed = await getReportFixed(city, report);
+
+    await new GaritaModel(reportFixed).save();
 
     await notifyUpdates(city);
   });
